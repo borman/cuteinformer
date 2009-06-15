@@ -3,8 +3,6 @@
 AbstractNotificationWidget::AbstractNotificationWidget(QWidget *parent)
 	: QFrame(parent)
 {
-	setFrameStyle(QFrame::Raised | QFrame::StyledPanel);
-	
 	setWindowFlags(Qt::ToolTip | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 	
 	setAttribute(Qt::WA_DeleteOnClose, true);
@@ -18,3 +16,4 @@ void AbstractNotificationWidget::closeEvent(QCloseEvent *)
 {
 	emit popFromStack(this);
 }
+

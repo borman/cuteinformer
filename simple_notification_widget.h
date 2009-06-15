@@ -8,6 +8,8 @@ class SimpleNotificationWidget: public AbstractNotificationWidget
 	Q_OBJECT
 	public:
 		SimpleNotificationWidget(QWidget *parent = NULL);
+	protected:
+		void paintEvent(QPaintEvent *);
 };
 
 #endif // SIMPLE_NOTIFICATION_WIDGET_H

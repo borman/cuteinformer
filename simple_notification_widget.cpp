@@ -15,3 +15,10 @@ SimpleNotificationWidget::SimpleNotificationWidget(QWidget *parent)
 	layout->addWidget(button);
 	connect(button, SIGNAL(clicked()), SLOT(close()));
 }
+
+void SimpleNotificationWidget::paintEvent(QPaintEvent *ev)
+{
+	QPainter p(this);
+	p.fillRect(rect(), palette().background());
+	AbstractNotificationWidget::paintEvent(ev);
+}
