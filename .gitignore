@@ -1,0 +1,9 @@
+# Build-time generated files
+moc_*
+*.o
+Makefile
+cuteinformer
+
+# Text editor backup files
+*~
+
