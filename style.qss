@@ -6,11 +6,20 @@ AbstractNotificationWidget
 
   padding-top: -0.7em;
   padding-bottom: -0.7em;
+  max-width: 300px;
 }
 
 AbstractNotificationWidget QLabel 
 {
   color: white;
+}
+
+/* Urgencies may be differentiated by indexes
+ * 0=> Low, 1 => Normal, 2 => Critical
+ */
+NotificationWidget[urgency="2"]  
+{
+  border-image: url(resources/bg_crit.png) 9 0 9 9;
 }
 
 AbstractNotificationWidget #Title

@@ -2,6 +2,7 @@
 #define ABSTRACT_NOTIFICATION_WIDGET_H
 
 #include <QFrame>
+#include <QTimeLine>
 
 /**
 	Abstract notification widget. It is not intended for actual use,
@@ -11,7 +12,7 @@ class AbstractNotificationWidget: public QFrame
 {
 	Q_OBJECT
 	public:
-		AbstractNotificationWidget(QWidget *parent = NULL);
+		AbstractNotificationWidget();
 	signals:
 		void popFromStack(AbstractNotificationWidget *);
 	public slots:
@@ -29,9 +30,11 @@ class AbstractNotificationWidget: public QFrame
 			with proper look-and-feel and callbacks
 			**/
 		void closeNotification();
+	private slots:
+		void sliding(qreal value);
+		void slideFinished();
 	protected:
 		void closeEvent(QCloseEvent *);
-		void showEvent(QShowEvent *);
 		
 		/** 
 			Reimplement this in a subclass to do something when the notification
@@ -42,6 +45,10 @@ class AbstractNotificationWidget: public QFrame
 			Reimplement it in a subclass to do something before closing is started
 			**/
 		virtual void notificationClosing() {};
+	private:
+		bool is_showing;
+		int m_position;
+		QTimeLine slide;
 };
 
 #endif // ABSTRACT_NOTIFICATION_WIDGET_H

@@ -20,7 +20,7 @@ class NotificationWidget: public AbstractNotificationWidget
 	Q_PROPERTY(QString title READ title WRITE setTitle)
 	Q_PROPERTY(QString body READ body WRITE setBody)
 	Q_PROPERTY(QPixmap icon READ icon WRITE setIcon)
-	Q_PROPERTY(Urgency urgency READ urgency WRITE setUrgency)
+	Q_PROPERTY(Urgency urgency READ urgency)
 	Q_PROPERTY(int timeout READ timeout WRITE setTimeout)
 	public:
 		enum Urgency
@@ -30,7 +30,7 @@ class NotificationWidget: public AbstractNotificationWidget
 			Critical
 		};
 		
-		NotificationWidget(QWidget *parent = NULL);
+		NotificationWidget(Urgency u = Normal);
 		
 		/**
 			Notification title
@@ -54,7 +54,6 @@ class NotificationWidget: public AbstractNotificationWidget
 			Notification urgency
 			**/
 		Urgency urgency() const { return m_urgency; }
-		void setUrgency(Urgency u);
 		
 		/**
 			Hide timeout in milliseconds
@@ -63,6 +62,7 @@ class NotificationWidget: public AbstractNotificationWidget
 		void setTimeout(int timeout);
 	protected:
 		void mousePressEvent(QMouseEvent *event);
+		void notificationShown();
 	private:
 		QString m_title;
 		QString m_body;

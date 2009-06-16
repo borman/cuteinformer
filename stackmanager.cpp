@@ -103,7 +103,6 @@ void StackManager::pop(StackManager::Item item)
 	QMap<Item, int>::iterator m_i = d->map.find(item);
 	if (m_i==d->map.end())
 		return;
-	Metric delta = d->items[m_i.value()].height+d->spacing;
 	d->items.removeAt(m_i.value());
 	m_i = d->map.erase(m_i);
 	for (; m_i!=d->map.end(); m_i++)

@@ -4,8 +4,9 @@
 #include <QLabel>
 #include <QMouseEvent>
 
-NotificationWidget::NotificationWidget(QWidget *parent)
-	: AbstractNotificationWidget(parent),
+NotificationWidget::NotificationWidget(NotificationWidget::Urgency u)
+	: AbstractNotificationWidget(),
+		m_urgency(u),
 		w_title(this), w_underTitle(this), w_icon(this), w_body(this)
 {	
 	setObjectName("Notification");
@@ -32,14 +33,22 @@ NotificationWidget::NotificationWidget(QWidget *parent)
 	setTitle(QString::null);
 	setBody(QString::null);
 	setIcon(QPixmap());
-	setUrgency(Normal);
 	setTimeout(0);
+	
+	showTimer.setSingleShot(true);
+	connect(&showTimer, SIGNAL(timeout()), SLOT(closeNotification()));
 }
 
 void NotificationWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button()==Qt::LeftButton || event->button()==Qt::RightButton)
-		close();
+		closeNotification();
+}
+
+void NotificationWidget::notificationShown()
+{
+	if (m_timeout>0)
+		showTimer.start();
 }
 
 void NotificationWidget::setTitle(const QString &str)
@@ -82,13 +91,8 @@ void NotificationWidget::setIcon(const QPixmap &icon)
 	}
 }
 
-void NotificationWidget::setUrgency(Urgency u)
-{
-	m_urgency = u;
-}
-
 void NotificationWidget::setTimeout(int timeout)
 {
 	m_timeout = timeout;
-	showTimer.setInterval(m_timeout);
+ 	showTimer.setInterval(m_timeout);
 }
