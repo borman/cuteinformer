@@ -1,4 +1,5 @@
 #include "notify_admin.h"
+#include "dbus_interface.h"
 
 #include <QApplication>
 #include <QFile>
@@ -19,6 +20,9 @@ int main(int argc, char **argv)
 	
 	NotifyAdmin admin;
 	admin.show();
+	
+	FreedesktopNotifications noti;
+	Q_UNUSED(noti);
 	
 	return app.exec();
 }

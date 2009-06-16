@@ -4,6 +4,7 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 CONFIG += silent debug
+QT += dbus
 
 # Store generated files in subfolders
 MOC_DIR = .moc
@@ -18,11 +19,13 @@ HEADERS += $$HEADERS_TEST \
 	stackmanager.h \
 	widgetstack.h \
 	abstract_notification_widget.h \
-	notification_widget.h 
+	notification_widget.h \
+	dbus_interface.h
 	
 SOURCES +=  $$SOURCES_TEST \
 	main.cpp \
 	stackmanager.cpp \
 	widgetstack.cpp \
 	abstract_notification_widget.cpp \
-	notification_widget.cpp 
+	notification_widget.cpp \
+	dbus_interface.cpp
