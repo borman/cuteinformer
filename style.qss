@@ -1,10 +1,8 @@
 AbstractNotificationWidget
 {
-  background-color: rgba(0, 0, 0, 75%);
-  border-radius: 10px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: rgb(200, 200, 200);
+  border-image: url(resources/bg.png) 9 0 9 9;
+  border-width: 9px;
+  border-right: 0px;
 }
 
 AbstractNotificationWidget QLabel 

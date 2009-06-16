@@ -9,7 +9,7 @@ class SimpleNotificationWidget: public AbstractNotificationWidget
 	public:
 		SimpleNotificationWidget(QWidget *parent = NULL);
 	protected:
-		void paintEvent(QPaintEvent *);
+		void mousePressEvent(QMouseEvent *event);
 };
 
 #endif // SIMPLE_NOTIFICATION_WIDGET_H
