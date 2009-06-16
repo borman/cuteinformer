@@ -18,11 +18,11 @@ HEADERS += $$HEADERS_TEST \
 	stackmanager.h \
 	widgetstack.h \
 	abstract_notification_widget.h \
-	simple_notification_widget.h 
+	notification_widget.h 
 	
 SOURCES +=  $$SOURCES_TEST \
 	main.cpp \
 	stackmanager.cpp \
 	widgetstack.cpp \
 	abstract_notification_widget.cpp \
-	simple_notification_widget.cpp 
+	notification_widget.cpp 

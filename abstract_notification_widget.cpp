@@ -1,5 +1,8 @@
 #include "abstract_notification_widget.h"
 
+#include <QApplication>
+#include <QDesktopWidget>
+
 AbstractNotificationWidget::AbstractNotificationWidget(QWidget *parent)
 	: QFrame(parent)
 {
@@ -17,3 +20,25 @@ void AbstractNotificationWidget::closeEvent(QCloseEvent *)
 	emit popFromStack(this);
 }
 
+void AbstractNotificationWidget::showEvent(QShowEvent *)
+{
+	notificationShown();
+}
+
+void AbstractNotificationWidget::closeNotification()
+{
+	notificationClosing();
+	close();
+}
+
+void AbstractNotificationWidget::showNotification()
+{
+	show();
+}
+
+void AbstractNotificationWidget::setPosition(int position)
+{
+	QPoint dest = QApplication::desktop()->availableGeometry(this).bottomRight()
+						   +QPoint(-width()+1, -height()-position);
+	move(dest);
+}

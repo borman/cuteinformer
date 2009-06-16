@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QMap>
 #include "stackmanager.h"
+#include "abstract_notification_widget.h"
 
 class WidgetStack: public QObject
 {
@@ -11,15 +12,13 @@ class WidgetStack: public QObject
 	public:
 		WidgetStack(QObject *parent = NULL);
 	public slots:
-		void pushWidget(QWidget *w);
-		void popWidget(QWidget *w);
+		void push(AbstractNotificationWidget *w);
+		void pop(AbstractNotificationWidget *w);
 	private slots:
 		void widgetUpdated(StackManager::Item item);
 	private:
-		void placeWidget(QWidget *w, int pos);
-		
-		QMap<StackManager::Item, QWidget *> map;
-		QMap<QWidget *, StackManager::Item> rmap;
+		QMap<StackManager::Item, AbstractNotificationWidget *> map;
+		QMap<AbstractNotificationWidget *, StackManager::Item> rmap;
 		StackManager manager;
 };
 
