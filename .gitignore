@@ -1,9 +1,9 @@
 # Build-time generated files
-moc_*
-*.o
+.moc
+.obj
 Makefile
 cuteinformer
 
-# Text editor backup files
+# Text editor garbage
 *~
-
+*.swp
