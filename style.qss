@@ -3,9 +3,31 @@ AbstractNotificationWidget
   border-image: url(resources/bg.png) 9 0 9 9;
   border-width: 9px;
   border-right: 0px;
+
+  padding-top: -0.7em;
+  padding-bottom: -0.7em;
 }
 
 AbstractNotificationWidget QLabel 
 {
   color: white;
+}
+
+AbstractNotificationWidget #Title
+{
+  font-weight: bold;
+  font-size: 12pt;
+}
+
+AbstractNotificationWidget #UnderTitle
+{
+  max-height: 0px; /* Hide it */
+}
+
+AbstractNotificationWidget #Icon
+{
+}
+
+AbstractNotificationWidget #Body
+{
 }

@@ -17,6 +17,9 @@ NotifyAdmin::NotifyAdmin(QWidget *parent)
 	layout->addRow(tr("Body"), &w_body);
 	layout->addRow(addButton);
 	
+	w_title.setText("Title");
+	w_body.setText("Body");
+	
 	connect(addButton, SIGNAL(clicked()), SLOT(commitNotification()));
 }
 

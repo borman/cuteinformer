@@ -11,11 +11,9 @@ NotificationWidget::NotificationWidget(QWidget *parent)
 	setObjectName("Notification");
 	
 	w_title.setObjectName("Title");
-	w_title.setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 	
 	w_underTitle.setObjectName("UnderTitle");
 	w_underTitle.setFrameStyle(QFrame::HLine);
-	w_underTitle.setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 	
 	w_icon.setObjectName("Icon");
 	
