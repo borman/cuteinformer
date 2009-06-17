@@ -34,8 +34,13 @@ struct StackManagerPrivate
 };
 
 StackManager::StackManager(QObject *parent)
-: QObject(parent), d(new StackManagerPrivate())
+: QObject(parent), d(new StackManagerPrivate)
 {
+}
+
+StackManager::~StackManager()
+{
+	delete d;
 }
 
 StackManager::Metric StackManager::acceleration() const

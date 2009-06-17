@@ -15,6 +15,7 @@ class AbstractNotificationWidget: public QFrame
 		AbstractNotificationWidget();
 	signals:
 		void popFromStack(AbstractNotificationWidget *);
+		void closed(int reason_code);
 	public slots:
 		/**
 			Place the notification at specified position relative to anchor
@@ -28,8 +29,9 @@ class AbstractNotificationWidget: public QFrame
 		/**
 			Use this rather than QWidget::close() to close the notification
 			with proper look-and-feel and callbacks
+			Also, reports close reason \a reason_code through closed() signal
 			**/
-		void closeNotification();
+		void closeNotification(int reason_code);
 	private slots:
 		void sliding(qreal);
 		void slideFinished();

@@ -36,6 +36,12 @@ class NotificationWidget: public AbstractNotificationWidget
 			Normal,
 			Critical
 		};
+		enum CloseReason
+		{
+			Timeout,
+			UserAction,
+			ByMessage
+		};
 		
 		/**
 			Urgency and category are properties that specify notification's class,
@@ -77,6 +83,10 @@ class NotificationWidget: public AbstractNotificationWidget
 			**/
 		int timeout() const { return m_timeout; }
 		void setTimeout(int timeout);
+	signals:
+		void closed(NotificationWidget *);
+	private slots:
+		void expired();
 	protected:
 		void mousePressEvent(QMouseEvent *event);
 		void notificationShown();

@@ -22,13 +22,14 @@ AbstractNotificationWidget::AbstractNotificationWidget()
 	connect(&slide, SIGNAL(finished()), SLOT(slideFinished()));
 }
 
-void AbstractNotificationWidget::closeNotification()
+void AbstractNotificationWidget::closeNotification(int reason_code)
 {
 	notificationClosing();
 	is_showing = false;
 	slide.setDirection(QTimeLine::Backward);
 	slide.start();
 	emit popFromStack(this);
+	emit closed(reason_code);
 }
 
 void AbstractNotificationWidget::showNotification()

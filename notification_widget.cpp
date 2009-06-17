@@ -35,13 +35,18 @@ NotificationWidget::NotificationWidget(NotificationWidget::Urgency urgency, cons
 void NotificationWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button()==Qt::LeftButton || event->button()==Qt::RightButton)
-		closeNotification();
+		closeNotification(UserAction);
 }
 
 void NotificationWidget::notificationShown()
 {
 	if (m_timeout>0)
-		QTimer::singleShot(m_timeout, this, SLOT(closeNotification()));
+		QTimer::singleShot(m_timeout, this, SLOT(expired()));
+}
+
+void NotificationWidget::expired()
+{
+	closeNotification(Timeout);
 }
 
 void NotificationWidget::setTitle(const QString &str)

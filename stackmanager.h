@@ -20,6 +20,7 @@ class StackManager: public QObject
 		typedef qreal Metric;
 	
 		StackManager(QObject *parent = NULL);
+		virtual ~StackManager();
 		
 		/**
 			Item's acceleration when animating. Unit is pixel/sec^2. 

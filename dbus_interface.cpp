@@ -10,7 +10,8 @@ FreedesktopNotifications::FreedesktopNotifications(QObject *parent)
 		stack(this), counter(0)
 {
 	QDBusConnection connection = QDBusConnection::sessionBus();
-	connection.registerObject("/org/freedesktop/Notifications", this, QDBusConnection::ExportAllSlots);
+	connection.registerObject("/org/freedesktop/Notifications", this, 
+														 QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals);
 	connection.registerService("org.cuteinformer");
 	connection.registerService("org.freedesktop.Notifications");
 }
@@ -71,10 +72,63 @@ quint32 FreedesktopNotifications::Notify(const QString &app_name, quint32 replac
 	w->setTimeout(expire_timeout);
 	w->resize(w->sizeHint());
 	stack.push(w);
+	
+	quint32 id = ++counter;
+	map[id] = w;
+	rmap[w] = id;
+	connect(w, SIGNAL(closed(int)), SLOT(closed(int)));
+	connect(w, SIGNAL(destroyed(QObject *)), SLOT(destroyed(QObject *)));
 		
-	return ++counter;
+	return id;
 }
 
 void FreedesktopNotifications::CloseNotification(quint32 id)
 {
+	NotificationWidget *w = qobject_cast<NotificationWidget *>(map[id]);
+	if (!w)
+		return;
+	w->closeNotification(NotificationWidget::ByMessage);
+}
+
+void FreedesktopNotifications::GetServerInformation(QString &name, QString &vendor, QString &version)
+{
+	name = "cuteinformer";
+	vendor = "borman";
+	version = "0.1";
+}
+
+//-------------- Internal methods
+
+void FreedesktopNotifications::closed(int reason_code)
+{
+	NotificationWidget *w = qobject_cast<NotificationWidget *>(sender());
+	if (!w)
+		return;
+	quint32 id = rmap[w];
+	quint32 reason = 4; // Undefined
+	switch (reason_code)
+	{
+		case NotificationWidget::Timeout:
+			reason = 1;
+			break;
+		case NotificationWidget::UserAction:
+			reason = 2;
+			break;
+		case NotificationWidget::ByMessage:
+			reason = 3;
+			break;
+	}
+	map.remove(id);
+	rmap.remove(w);
+	emit NotificationClosed(id, reason);
+}
+
+void FreedesktopNotifications::destroyed(QObject *o)
+{
+	NotificationWidget *w = qobject_cast<NotificationWidget *>(o);
+	if (w && rmap.contains(w))
+	{
+		map.remove(rmap[w]);
+		rmap.remove(w);
+	}
 }

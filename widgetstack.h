@@ -16,6 +16,7 @@ class WidgetStack: public QObject
 		void pop(AbstractNotificationWidget *w);
 	private slots:
 		void widgetUpdated(StackManager::Item item);
+		void destroyed(QObject *o);
 	private:
 		QMap<StackManager::Item, AbstractNotificationWidget *> map;
 		QMap<AbstractNotificationWidget *, StackManager::Item> rmap;

@@ -9,12 +9,16 @@
 
 #include "widgetstack.h"
 
+class NotificationWidget;
 class FreedesktopNotifications: public QObject
 {
 	Q_OBJECT
 	Q_CLASSINFO("D-Bus Interface", "org.freedesktop.Notifications")
 	public:
 		FreedesktopNotifications(QObject *parent = NULL);
+	signals:
+		/* org.freedesktop.Notifications.NotificationClosed (UINT32 id, UINT32 reason); */
+		void NotificationClosed(quint32 id, quint32 reason);
 	public slots:
 		/* STRING_ARRAY org.freedesktop.Notifications.GetCapabilities (void); */
 		QStringList GetCapabilities();
@@ -34,10 +38,15 @@ class FreedesktopNotifications: public QObject
 		void CloseNotification(quint32 id);
 		
 		/* void org.freedesktop.Notifications.GetServerInformation (out STRING name, out STRING vendor, out STRING version); */
-		
+		void GetServerInformation(QString &name, QString &vendor, QString &version);
+	private slots:
+		void closed(int reason_code);
+		void destroyed(QObject *o);
 	private:
 		WidgetStack stack;
 		quint32 counter;
+		QMap<quint32, NotificationWidget *> map;
+		QMap<NotificationWidget *, quint32> rmap;
 };
 
 #endif // DBUS_INTERFACE_H

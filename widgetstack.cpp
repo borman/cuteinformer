@@ -19,6 +19,7 @@ void WidgetStack::push(AbstractNotificationWidget *w)
 	rmap[w] = item;
 	
 	connect(w, SIGNAL(popFromStack(AbstractNotificationWidget *)), SLOT(pop(AbstractNotificationWidget *)));
+	connect(w, SIGNAL(destroyed(QObject *)), SLOT(destroyed(QObject *)));
 	w->setPosition(manager.bottom(item));
 	w->showNotification();
 }
@@ -35,4 +36,14 @@ void WidgetStack::widgetUpdated(StackManager::Item item)
 {
 	AbstractNotificationWidget *w = map[item];
 	w->setPosition(manager.bottom(item));
+}
+
+void WidgetStack::destroyed(QObject *o)
+{
+	AbstractNotificationWidget *w = qobject_cast<AbstractNotificationWidget *>(o);
+	if (w && rmap.contains(w))
+	{
+		map.remove(rmap[w]);
+		rmap.remove(w);
+	}
 }
