@@ -1,4 +1,5 @@
 #include "FreedesktopNotifications.h"
+#include "ThemeManager.h"
 
 #include <QApplication>
 #include <QFile>
@@ -10,17 +11,12 @@ int main(int argc, char **argv)
 {
 	QApplication app(argc, argv);
 
-	// FIXME: this will be removed as soon as settings are implemented
-	QDir::setSearchPaths("theme", QStringList("./theme")); 
-	
-	QFile qss("theme:style.qss");
-	if (qss.exists())
-	{
-		qss.open(QIODevice::ReadOnly);
-		QTextStream ts(&qss);
-		app.setStyleSheet(ts.readAll());
-		qss.close();
-	}
+	ThemeManager tman;
+	QString comment;
+	if (!tman.load("theme/index.theme", comment))
+		qDebug() << "Theme load error:" << comment;
+	else
+		qDebug() << "Theme loaded ok";
 	
 	FreedesktopNotifications noti;
 	Q_UNUSED(noti);
