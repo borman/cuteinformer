@@ -69,17 +69,19 @@ class StackManager: public QObject
 			**/
 		void updated(StackManager::Item i);
 		
-	private slots:
-		/**
-			\internal
-			Move items within animation.
-			**/
-		void updatePositions();
+	protected:
+		void timerEvent(QTimerEvent *);
+	private:
 		/**
 			\internal
 			Start animation if not running.
 			**/
 		void animate();
+		/**
+			\internal
+			Stop animation if running
+			**/
+		void stopAnimation();
 		
 	private:
 	StackManagerPrivate *d;

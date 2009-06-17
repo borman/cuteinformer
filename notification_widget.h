@@ -12,6 +12,8 @@
 	Actual notification widget
 	For description on properties see Notification specs at 
 	http://www.galago-project.org/specs/notification/0.9/index.html
+	
+	\todo do something with word-wrapping in body (though it's strange to have very long words)
 **/
 class NotificationWidget: public AbstractNotificationWidget
 {

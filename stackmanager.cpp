@@ -8,6 +8,8 @@
 
 #include <cmath>
 
+static const int UPDATE_INTERVAL = 1000/50;
+
 struct StackManagerPrivate
 {
 	struct ItemData
@@ -19,30 +21,28 @@ struct StackManagerPrivate
 	};
 	QList<ItemData> items;
 	QMap<StackManager::Item, int> map;
-	QTimer updateTimer;
+	int updateTimer;
 	QTime timeDiff;
 	StackManager::Item next_id;
 	StackManager::Metric acceleration;
 	StackManager::Metric spacing;
 	
-	StackManagerPrivate(StackManager *owner)
-		: updateTimer(owner), next_id(0), acceleration(3000), spacing(10)
+	StackManagerPrivate()
+		: updateTimer(0), next_id(0), acceleration(3000), spacing(10)
 	{
 	}
 };
 
 StackManager::StackManager(QObject *parent)
-: QObject(parent), d(new StackManagerPrivate(this))
+: QObject(parent), d(new StackManagerPrivate())
 {
-	connect(&d->updateTimer, SIGNAL(timeout()), SLOT(updatePositions()));
-	d->updateTimer.setSingleShot(false);
-	d->updateTimer.setInterval(1000/50);
 }
 
 StackManager::Metric StackManager::acceleration() const
 {
 	return d->acceleration;
 }
+
 void StackManager::setAcceleration(StackManager::Metric value)
 {
 	d->acceleration = value;
@@ -116,7 +116,7 @@ inline qreal sgn(qreal x)
 	return (x<0)?-1:1;
 }
 
-void StackManager::updatePositions()
+void StackManager::timerEvent(QTimerEvent *)
 {
 	bool need_actions = false;
 	qreal dt = d->timeDiff.restart()/1000.0;
@@ -158,12 +158,21 @@ void StackManager::updatePositions()
 		emit updated(item->id);
 	}
 	if (!need_actions)
-		d->updateTimer.stop();
+		stopAnimation();
 }
 
 void StackManager::animate()
 {
+	if (d->updateTimer!=0)
+		return;
 	d->timeDiff.start();
-	if (!d->updateTimer.isActive())
-		d->updateTimer.start();
+	d->updateTimer = startTimer(UPDATE_INTERVAL);
+}
+
+void StackManager::stopAnimation()
+{
+	if (d->updateTimer==0)
+		return;
+	killTimer(d->updateTimer);
+	d->updateTimer = 0;
 }
