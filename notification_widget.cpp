@@ -3,12 +3,15 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QDebug>
 
 NotificationWidget::NotificationWidget(NotificationWidget::Urgency urgency, const QString &category)
 	: AbstractNotificationWidget(),
 		m_urgency(urgency), m_category(category),
 		w_title(this), w_icon(this), w_body(this)
 {	
+	qDebug() << "Notification(" << urgency << category << ")";
+	
 	setObjectName("Notification");
 	
 	w_title.setObjectName("Title");
@@ -17,14 +20,22 @@ NotificationWidget::NotificationWidget(NotificationWidget::Urgency urgency, cons
 	
 	w_body.setObjectName("Body");
 	w_body.setWordWrap(true);
-
+	
+#if 0
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 	mainLayout->addWidget(&w_title);
 	QHBoxLayout *bodyLayout = new QHBoxLayout;
 	bodyLayout->addWidget(&w_icon);
-	bodyLayout->addStretch();
 	bodyLayout->addWidget(&w_body);
 	mainLayout->addLayout(bodyLayout);
+#else
+	QHBoxLayout *mainLayout = new QHBoxLayout(this);
+	mainLayout->addWidget(&w_icon);
+	QVBoxLayout *bodyLayout = new QVBoxLayout;
+	bodyLayout->addWidget(&w_title);
+	bodyLayout->addWidget(&w_body);
+	mainLayout->addLayout(bodyLayout);
+#endif
 	
 	setTitle(QString::null);
 	setBody(QString::null);

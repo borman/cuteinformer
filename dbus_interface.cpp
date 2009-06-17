@@ -33,7 +33,7 @@ quint32 FreedesktopNotifications::Notify(const QString &app_name, quint32 replac
 		<< hints << expire_timeout;
 		
 	NotificationWidget::Urgency urgency = NotificationWidget::Normal;
-	if (hints.contains("urgency") && hints["urgency"].type()==QVariant::Int)
+	if (hints.contains("urgency") && hints["urgency"].canConvert(QVariant::Int))
 		switch (hints["urgency"].toInt())
 		{
 			case 0:

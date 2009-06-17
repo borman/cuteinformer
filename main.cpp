@@ -3,13 +3,17 @@
 #include <QApplication>
 #include <QFile>
 #include <QTextStream>
+#include <QDir>
 #include <QDebug>
 
 int main(int argc, char **argv)
 {
 	QApplication app(argc, argv);
+
+	// FIXME: this will be removed as soon as settings are implemented
+	QDir::setSearchPaths("theme", QStringList("./theme")); 
 	
-	QFile qss("style.qss");
+	QFile qss("theme:style.qss");
 	if (qss.exists())
 	{
 		qss.open(QIODevice::ReadOnly);
