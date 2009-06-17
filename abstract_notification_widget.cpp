@@ -22,17 +22,13 @@ AbstractNotificationWidget::AbstractNotificationWidget()
 	connect(&slide, SIGNAL(finished()), SLOT(slideFinished()));
 }
 
-void AbstractNotificationWidget::closeEvent(QCloseEvent *)
-{
-	emit popFromStack(this);
-}
-
 void AbstractNotificationWidget::closeNotification()
 {
 	notificationClosing();
 	is_showing = false;
 	slide.setDirection(QTimeLine::Backward);
 	slide.start();
+	emit popFromStack(this);
 }
 
 void AbstractNotificationWidget::showNotification()
@@ -51,7 +47,7 @@ void AbstractNotificationWidget::setPosition(int position)
 	move(dest);
 }
 
-void AbstractNotificationWidget::sliding(qreal value)
+void AbstractNotificationWidget::sliding(qreal)
 {
 	setPosition(m_position);
 }

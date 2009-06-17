@@ -17,10 +17,15 @@ class NotificationWidget: public AbstractNotificationWidget
 {
 	Q_OBJECT
 	Q_ENUMS(Urgency)
+	
+	// Selector properties
+	Q_PROPERTY(Urgency urgency READ urgency)
+	Q_PROPERTY(QString category READ category)
+	
+	// Data properties
 	Q_PROPERTY(QString title READ title WRITE setTitle)
 	Q_PROPERTY(QString body READ body WRITE setBody)
 	Q_PROPERTY(QPixmap icon READ icon WRITE setIcon)
-	Q_PROPERTY(Urgency urgency READ urgency)
 	Q_PROPERTY(int timeout READ timeout WRITE setTimeout)
 	public:
 		enum Urgency
@@ -30,7 +35,22 @@ class NotificationWidget: public AbstractNotificationWidget
 			Critical
 		};
 		
-		NotificationWidget(Urgency u = Normal);
+		/**
+			Urgency and category are properties that specify notification's class,
+			so they may be used as selectors in style sheet and they must be provided to constructor.
+			Other properties' data is ard to classify, so they are supplied later.
+			**/
+		NotificationWidget(Urgency urgency = Normal, const QString &category = QString::null);
+		
+		/**
+			Notification urgency
+			**/
+		Urgency urgency() const { return m_urgency; }
+		
+		/**
+			Notification category
+			**/
+		QString category() const { return m_category; }
 		
 		/**
 			Notification title
@@ -51,11 +71,6 @@ class NotificationWidget: public AbstractNotificationWidget
 		void setIcon(const QPixmap &icon);
 		
 		/**
-			Notification urgency
-			**/
-		Urgency urgency() const { return m_urgency; }
-		
-		/**
 			Hide timeout in milliseconds
 			**/
 		int timeout() const { return m_timeout; }
@@ -64,15 +79,15 @@ class NotificationWidget: public AbstractNotificationWidget
 		void mousePressEvent(QMouseEvent *event);
 		void notificationShown();
 	private:
+		Urgency m_urgency;
+		QString m_category;
+		
 		QString m_title;
 		QString m_body;
 		QPixmap m_icon;
-		Urgency m_urgency;
 		int m_timeout;
-		QTimer showTimer;
 		
 		QLabel w_title;
-		QFrame w_underTitle;
 		QLabel w_icon;
 		QLabel w_body;
 };

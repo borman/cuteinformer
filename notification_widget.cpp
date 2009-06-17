@@ -4,17 +4,14 @@
 #include <QLabel>
 #include <QMouseEvent>
 
-NotificationWidget::NotificationWidget(NotificationWidget::Urgency u)
+NotificationWidget::NotificationWidget(NotificationWidget::Urgency urgency, const QString &category)
 	: AbstractNotificationWidget(),
-		m_urgency(u),
-		w_title(this), w_underTitle(this), w_icon(this), w_body(this)
+		m_urgency(urgency), m_category(category),
+		w_title(this), w_icon(this), w_body(this)
 {	
 	setObjectName("Notification");
 	
 	w_title.setObjectName("Title");
-	
-	w_underTitle.setObjectName("UnderTitle");
-	w_underTitle.setFrameStyle(QFrame::HLine);
 	
 	w_icon.setObjectName("Icon");
 	
@@ -23,7 +20,6 @@ NotificationWidget::NotificationWidget(NotificationWidget::Urgency u)
 
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 	mainLayout->addWidget(&w_title);
-	mainLayout->addWidget(&w_underTitle);
 	QHBoxLayout *bodyLayout = new QHBoxLayout;
 	bodyLayout->addWidget(&w_icon);
 	bodyLayout->addStretch();
@@ -34,9 +30,6 @@ NotificationWidget::NotificationWidget(NotificationWidget::Urgency u)
 	setBody(QString::null);
 	setIcon(QPixmap());
 	setTimeout(0);
-	
-	showTimer.setSingleShot(true);
-	connect(&showTimer, SIGNAL(timeout()), SLOT(closeNotification()));
 }
 
 void NotificationWidget::mousePressEvent(QMouseEvent *event)
@@ -48,22 +41,18 @@ void NotificationWidget::mousePressEvent(QMouseEvent *event)
 void NotificationWidget::notificationShown()
 {
 	if (m_timeout>0)
-		showTimer.start();
+		QTimer::singleShot(m_timeout, this, SLOT(closeNotification()));
 }
 
 void NotificationWidget::setTitle(const QString &str)
 {
 	m_title = str;
 	if (m_title.isEmpty())
-	{
 		w_title.hide();
-		w_underTitle.hide();
-	}
 	else
 	{
 		w_title.setText(m_title);
 		w_title.show();
-		w_underTitle.show();
 	}
 }
 		
@@ -94,5 +83,4 @@ void NotificationWidget::setIcon(const QPixmap &icon)
 void NotificationWidget::setTimeout(int timeout)
 {
 	m_timeout = timeout;
- 	showTimer.setInterval(m_timeout);
 }

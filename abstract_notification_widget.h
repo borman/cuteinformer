@@ -31,11 +31,9 @@ class AbstractNotificationWidget: public QFrame
 			**/
 		void closeNotification();
 	private slots:
-		void sliding(qreal value);
+		void sliding(qreal);
 		void slideFinished();
 	protected:
-		void closeEvent(QCloseEvent *);
-		
 		/** 
 			Reimplement this in a subclass to do something when the notification
 			is shown and ready (e.g. show animation has ended)

@@ -32,20 +32,38 @@ quint32 FreedesktopNotifications::Notify(const QString &app_name, quint32 replac
 		<< hints << expire_timeout;
 		
 	NotificationWidget::Urgency urgency = NotificationWidget::Normal;
-	if (hints.contains("urgency"))
+	if (hints.contains("urgency") && hints["urgency"].type()==QVariant::Int)
+		switch (hints["urgency"].toInt())
+		{
+			case 0:
+				urgency = NotificationWidget::Low;
+				break;
+			case 2:
+				urgency = NotificationWidget::Critical;
+				break;	
+		}
+	
+	QString category = QString::null;
+	if (hints.contains("category") && hints["category"].type()==QVariant::String)
+		category = hints["category"].toString();
+		
+	
+	if (expire_timeout<0)
 	{
-		QVariant v_urg = hints["urgency"];
-		if (v_urg.type()==QVariant::Int)
-			switch (v_urg.toInt())
-			{
-				case 0:
-					urgency = NotificationWidget::Low;
-					break;
-				case 2:
-					urgency = NotificationWidget::Critical;
-					break;	
-			}
+		switch (urgency)
+		{
+			case NotificationWidget::Low:
+				expire_timeout = 2000;
+				break;
+			case NotificationWidget::Normal:
+				expire_timeout = 10000;
+				break;
+			case NotificationWidget::Critical:
+				expire_timeout = 120000;
+				break;
+		}
 	}
+	
 	NotificationWidget *w = new NotificationWidget(urgency);
 	w->setTitle(summary);
 	w->setBody(body);
