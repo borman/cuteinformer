@@ -1,4 +1,4 @@
-#include "stackmanager.h"
+#include "StackManager.h"
 
 #include <QList>
 #include <QMap>

@@ -1,4 +1,4 @@
-#include "abstract_notification_widget.h"
+#include "AbstractNotificationWidget.h"
 
 #include <QApplication>
 #include <QDesktopWidget>

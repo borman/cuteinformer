@@ -1,4 +1,4 @@
-#include "dbus_interface.h"
+#include "FreedesktopNotifications.h"
 
 #include <QApplication>
 #include <QFile>

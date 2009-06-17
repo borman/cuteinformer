@@ -1,5 +1,5 @@
-#ifndef DBUS_INTERFACE_H
-#define DBUS_INTERFACE_H
+#ifndef FREEDESKTOP_NOTIFICATIONS_H
+#define FREEDESKTOP_NOTIFICATIONS_H
 
 #include <QObject>
 #include <QVariant>
@@ -7,7 +7,7 @@
 #include <QString>
 #include <QStringList>
 
-#include "widgetstack.h"
+#include "WidgetStack.h"
 
 class NotificationWidget;
 class FreedesktopNotifications: public QObject
@@ -49,4 +49,4 @@ class FreedesktopNotifications: public QObject
 		QMap<NotificationWidget *, quint32> rmap;
 };
 
-#endif // DBUS_INTERFACE_H
+#endif // FREEDESKTOP_NOTIFICATIONS_H

@@ -1,4 +1,4 @@
-#include "widgetstack.h"
+#include "WidgetStack.h"
 
 #include <QWidget>
 #include <QDesktopWidget>

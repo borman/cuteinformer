@@ -1,4 +1,4 @@
-#include "notification_widget.h"
+#include "NotificationWidget.h"
 
 #include <QHBoxLayout>
 #include <QLabel>

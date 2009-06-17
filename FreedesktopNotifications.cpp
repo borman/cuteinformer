@@ -1,6 +1,6 @@
-#include "dbus_interface.h"
+#include "FreedesktopNotifications.h"
 
-#include "notification_widget.h"
+#include "NotificationWidget.h"
 
 #include <QtDBus>
 #include <QDebug>

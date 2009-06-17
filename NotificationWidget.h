@@ -1,7 +1,7 @@
 #ifndef NOTIFICATION_WIDGET_H
 #define NOTIFICATION_WIDGET_H
 
-#include "abstract_notification_widget.h"
+#include "AbstractNotificationWidget.h"
 
 #include <QPixmap>
 #include <QTimer>

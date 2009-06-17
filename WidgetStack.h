@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QMap>
-#include "stackmanager.h"
-#include "abstract_notification_widget.h"
+#include "StackManager.h"
+#include "AbstractNotificationWidget.h"
 
 class WidgetStack: public QObject
 {
