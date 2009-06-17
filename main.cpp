@@ -1,9 +1,9 @@
-#include "notify_admin.h"
 #include "dbus_interface.h"
 
 #include <QApplication>
 #include <QFile>
 #include <QTextStream>
+#include <QDebug>
 
 int main(int argc, char **argv)
 {
@@ -18,11 +18,10 @@ int main(int argc, char **argv)
 		qss.close();
 	}
 	
-	NotifyAdmin admin;
-	admin.show();
-	
 	FreedesktopNotifications noti;
 	Q_UNUSED(noti);
+	app.setQuitOnLastWindowClosed(false);
 	
+	qDebug() << argv[0] << "started!";
 	return app.exec();
 }

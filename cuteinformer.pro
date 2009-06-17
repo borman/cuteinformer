@@ -10,19 +10,15 @@ QT += dbus
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 
-# These sources are only for testing purposes, they should be removed in release
-HEADERS_TEST = notify_admin.h
-SOURCES_TEST = notify_admin.cpp
-
 # All source files
-HEADERS += $$HEADERS_TEST \
+HEADERS += \
 	stackmanager.h \
 	widgetstack.h \
 	abstract_notification_widget.h \
 	notification_widget.h \
 	dbus_interface.h
 	
-SOURCES +=  $$SOURCES_TEST \
+SOURCES += \
 	main.cpp \
 	stackmanager.cpp \
 	widgetstack.cpp \
