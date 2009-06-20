@@ -65,11 +65,7 @@ quint32 FreedesktopNotifications::Notify(const QString &app_name, quint32 replac
 		}
 	}
 	
-	NotificationWidget *w = new NotificationWidget(urgency);
-	w->setTitle(summary);
-	w->setBody(body);
-	w->setIcon(QPixmap(app_icon));
-	w->setTimeout(expire_timeout);
+	NotificationWidget *w = new NotificationWidget(urgency, category, summary, body, app_icon, expire_timeout);
 	w->resize(w->sizeHint());
 	stack.push(w);
 	

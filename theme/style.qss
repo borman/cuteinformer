@@ -1,38 +1,32 @@
 AbstractNotificationWidget
 {
-  border-image: url(theme:bg.png) 8px 0px 8px 8px repeat;
+  border-image: url(theme:bg.png) 8px 0px 8px 8px repeat; /* border is actually 3px but corner is 8x8 */
   border-width: 8px 0px 8px 8px;
+	padding: -5px 0px -5px -5px; /* neutralize padding caused by skin image */
 
   max-width: 300px;
-
-  padding-left: -0.7em;
-  padding-top: -0.7em;
-  padding-bottom: -0.7em;
 }
 
-NotificationWidget QLabel 
-{
-  color: white;
-}
-
-/* Urgencies are differentiated by indexes
- * 0=> Low, 1 => Normal, 2 => Critical
- */
-NotificationWidget[urgency="2"]  
+NotificationWidget[urgencyString="Critical"]  
 {
   border-image: url(theme:bg_crit.png) 8px 0px 8px 8px repeat;
 }
 
 NotificationWidget #Title
 {
-  font-weight: bold;
-  font-size: 12pt;
+	color: white;
+	margin: 1ex;
+	font-weight: bold;
 }
 
 NotificationWidget #Icon
 {
+	margin: 1ex 0px 1ex 1ex;
 }
 
 NotificationWidget #Body
 {
+	color: white;
+	margin: 0px 1ex 1ex 1ex;
+	font-size: 9pt;
 }

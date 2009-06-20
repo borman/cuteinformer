@@ -5,9 +5,12 @@
 #include <QMouseEvent>
 #include <QDebug>
 
-NotificationWidget::NotificationWidget(NotificationWidget::Urgency urgency, const QString &category)
+NotificationWidget::NotificationWidget(NotificationWidget::Urgency urgency, const QString &category,
+												const QString &title, const QString &body, const QPixmap &icon, int timeout)
 	: AbstractNotificationWidget(),
-		m_urgency(urgency), m_category(category),
+		m_urgency(urgency), m_category(category), m_title(title), 
+		m_body(body), m_icon(icon), m_timeout(timeout),
+		m_contents_code(""),
 		w_title(this), w_icon(this), w_body(this)
 {	
 	qDebug() << "Notification(" << urgency << category << ")";
@@ -21,26 +24,42 @@ NotificationWidget::NotificationWidget(NotificationWidget::Urgency urgency, cons
 	w_body.setObjectName("Body");
 	w_body.setWordWrap(true);
 	
-#if 0
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-	mainLayout->addWidget(&w_title);
-	QHBoxLayout *bodyLayout = new QHBoxLayout;
-	bodyLayout->addWidget(&w_icon);
-	bodyLayout->addWidget(&w_body);
-	mainLayout->addLayout(bodyLayout);
-#else
 	QHBoxLayout *mainLayout = new QHBoxLayout(this);
 	mainLayout->addWidget(&w_icon);
 	QVBoxLayout *bodyLayout = new QVBoxLayout;
 	bodyLayout->addWidget(&w_title);
 	bodyLayout->addWidget(&w_body);
 	mainLayout->addLayout(bodyLayout);
-#endif
 	
-	setTitle(QString::null);
-	setBody(QString::null);
-	setIcon(QPixmap());
-	setTimeout(0);
+	// Remove spacing: leave it to Style Sheet
+	mainLayout->setContentsMargins(0, 0, 0, 0);
+	bodyLayout->setContentsMargins(0, 0, 0, 0);
+	mainLayout->setSpacing(0);
+	bodyLayout->setSpacing(0);
+
+	if (m_icon.isNull())
+		w_icon.hide();
+	else
+	{
+		w_icon.setPixmap(m_icon);
+		m_contents_code += 'i';
+	}
+	
+	if (m_title.isEmpty())
+		w_title.hide();
+	else
+	{
+		w_title.setText(m_title);
+		m_contents_code += 't';
+	}
+	
+	if (m_body.isEmpty())
+		w_body.hide();
+	else
+	{
+		w_body.setText(m_body);
+		m_contents_code += 'b';
+	}
 }
 
 void NotificationWidget::mousePressEvent(QMouseEvent *event)
@@ -60,43 +79,17 @@ void NotificationWidget::expired()
 	closeNotification(Timeout);
 }
 
-void NotificationWidget::setTitle(const QString &str)
+QString NotificationWidget::urgencyString() const
 {
-	m_title = str;
-	if (m_title.isEmpty())
-		w_title.hide();
-	else
+	switch (m_urgency)
 	{
-		w_title.setText(m_title);
-		w_title.show();
-	}
-}
-		
-void NotificationWidget::setBody(const QString &str)
-{
-	m_body = str;
-	if (m_body.isEmpty())
-		w_body.hide();
-	else
-	{
-		w_body.setText(m_body);
-		w_body.show();
+		case Low:
+			return "Low";
+		default:
+		case Normal:
+			return "Normal";
+		case Critical:
+			return "Critical";
 	}
 }
 
-void NotificationWidget::setIcon(const QPixmap &icon)
-{
-	m_icon = icon;
-	if (m_icon.isNull())
-		w_icon.hide();
-	else
-	{
-		w_icon.setPixmap(m_icon);
-		w_icon.show();
-	}
-}
-
-void NotificationWidget::setTimeout(int timeout)
-{
-	m_timeout = timeout;
-}

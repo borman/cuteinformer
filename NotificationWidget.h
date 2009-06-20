@@ -13,7 +13,11 @@
 	For description on properties see Notification specs at 
 	http://www.galago-project.org/specs/notification/0.9/index.html
 	
-	\todo do something with word-wrapping in body (though it's strange to have very long words)
+	\todo Do something with word-wrapping in body (though it's strange to have very long words)
+	
+	\todo Think about hover behaviour: Ubuntu Notify-OSD guidelines advice to make a notification
+	more transparent and click-through on hover, while some other implementations freeze timeout timer
+	for all notifications shown until mouse pointer is moved away
 **/
 class NotificationWidget: public AbstractNotificationWidget
 {
@@ -22,13 +26,15 @@ class NotificationWidget: public AbstractNotificationWidget
 	
 	// Selector properties
 	Q_PROPERTY(Urgency urgency READ urgency)
+	Q_PROPERTY(QString urgencyString READ urgencyString) // For StyleSheet convenience (enums seem to be broken there)
 	Q_PROPERTY(QString category READ category)
+	Q_PROPERTY(QString contents READ contents)
 	
 	// Data properties
-	Q_PROPERTY(QString title READ title WRITE setTitle)
-	Q_PROPERTY(QString body READ body WRITE setBody)
-	Q_PROPERTY(QPixmap icon READ icon WRITE setIcon)
-	Q_PROPERTY(int timeout READ timeout WRITE setTimeout)
+	Q_PROPERTY(QString title READ title)
+	Q_PROPERTY(QString body READ body)
+	Q_PROPERTY(QPixmap icon READ icon)
+	Q_PROPERTY(int timeout READ timeout)
 	public:
 		enum Urgency
 		{
@@ -48,41 +54,27 @@ class NotificationWidget: public AbstractNotificationWidget
 			so they may be used as selectors in style sheet and they must be provided to constructor.
 			Other properties' data is ard to classify, so they are supplied later.
 			**/
-		NotificationWidget(Urgency urgency = Normal, const QString &category = QString::null);
+		NotificationWidget(Urgency urgency = Normal, const QString &category = QString::null,
+												const QString &title = QString::null, const QString &body = QString::null,
+												const QPixmap &icon = QPixmap(), int timeout = 0);
 		
-		/**
-			Notification urgency
-			**/
 		Urgency urgency() const { return m_urgency; }
-		
-		/**
-			Notification category
-			**/
+		QString urgencyString() const;
 		QString category() const { return m_category; }
-		
-		/**
-			Notification title
-			**/
 		QString title() const { return m_title; }
-		void setTitle(const QString &str);
-		
-		/**
-			Notification body
-			**/
 		QString body() const { return m_body; }
-		void setBody(const QString &str);
-		
-		/**
-			Notification icon
-			**/
 		QPixmap icon() const {return m_icon; }
-		void setIcon(const QPixmap &icon);
-		
 		/**
-			Hide timeout in milliseconds
+			Timeout in milliseconds before hiding
 			**/
 		int timeout() const { return m_timeout; }
-		void setTimeout(int timeout);
+		
+		/**
+			Notification contents state. It is in form "[i][t][b]", where "i" is for icon,
+			"t" is for title and "b" is for body, e.g. "i" means that only an icon is present
+			and "it" means an icon and a title without a body
+			**/
+		QString contents() const {return m_contents_code; }
 	signals:
 		void closed(NotificationWidget *);
 	private slots:
@@ -98,6 +90,8 @@ class NotificationWidget: public AbstractNotificationWidget
 		QString m_body;
 		QPixmap m_icon;
 		int m_timeout;
+		
+		QString m_contents_code;
 		
 		QLabel w_title;
 		QLabel w_icon;

@@ -75,13 +75,13 @@ void SettingsDialog::showEvent(QShowEvent *)
 {
 	QSettings settings;
 	filePath->setText(settings.value("Theme").toString());
-	buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+	//buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 }
 
 void SettingsDialog::saveSettings()
 {
 	qDebug() << "save settings";
-	buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
+	//buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 	
 	QSettings settings;
 	settings.setValue("Theme", filePath->text().trimmed());
