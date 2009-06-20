@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QApplication>
+#include <QtDebug>
 
 ThemeManager::ThemeManager(QObject *parent)
 	: QObject(parent)
@@ -14,6 +15,7 @@ ThemeManager::ThemeManager(QObject *parent)
 
 bool ThemeManager::load(const QString &file, QString &comment)
 {
+	qDebug() << "Loading theme" << file;
 	QSettings config(file, QSettings::IniFormat, this);
 	if (config.status()!=QSettings::NoError)
 	{

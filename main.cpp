@@ -1,5 +1,5 @@
 #include "FreedesktopNotifications.h"
-#include "ThemeManager.h"
+#include "Settings.h"
 
 #include <QApplication>
 #include <QFile>
@@ -24,9 +24,9 @@ void die(const QString &reason)
 void print_usage()
 {
 	QTextStream cout(stdout);
-	cout << QObject::tr("--help    \t\tShow this information") << '\n';
-	cout << QObject::tr("--debug   \t\tAllow debugging output") << '\n';
-	cout << QObject::tr("--settings\t\tAsk a running instance to show settings dialog if it is running"
+	cout << QObject::tr("--help           Show this information") << '\n';
+	cout << QObject::tr("--debug          Allow debugging output") << '\n';
+	cout << QObject::tr("--settings       Ask a running instance to show settings dialog if it is running "
 															"or show it and run a new instance otherwise") << '\n';
 }
 
@@ -43,6 +43,7 @@ void no_debug_msg_handler(QtMsgType t, const char *msg) // This handler is used 
 int main(int argc, char **argv)
 {
 	QApplication app(argc, argv);
+	QCoreApplication::setApplicationName("cuteinformer");
 	
 	// Parse command line
 	bool showSettings = false;
@@ -69,22 +70,18 @@ int main(int argc, char **argv)
 	{
 		if (showSettings) 
 		{ // Ok, let that instance show settings dialog
-			
+			// FIXME: Did I forget anything?
+			return 0;
 		}
 		else			
 			die(QObject::tr("CuteInformer is already running with pid %1")
 				.arg(iface->servicePid("org.cuteinformer")));
 	}
-
-	// Load a theme
-	// TODO: theme must not be harcoded
-	ThemeManager tman;
-	QString comment;
-	if (!tman.load("theme/index.theme", comment))
-		qDebug() << "Theme load error:" << comment;
-	else
-		qDebug() << "Theme loaded ok";
 	
+	Settings settings;
+	if (showSettings)
+		settings.showDialog();
+
 	// Listen for D-Bus calls
 	FreedesktopNotifications noti;
 	Q_UNUSED(noti);

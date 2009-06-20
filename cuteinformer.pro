@@ -17,7 +17,8 @@ HEADERS += \
 	AbstractNotificationWidget.h \
 	NotificationWidget.h \
 	FreedesktopNotifications.h \
-	ThemeManager.h
+	ThemeManager.h \
+	Settings.h
 	
 SOURCES += \
 	main.cpp \
@@ -26,4 +27,5 @@ SOURCES += \
 	AbstractNotificationWidget.cpp \
 	NotificationWidget.cpp \
 	FreedesktopNotifications.cpp \
-	ThemeManager.cpp
+	ThemeManager.cpp \
+	Settings.cpp
