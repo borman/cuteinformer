@@ -1,4 +1,4 @@
-AbstractNotificationWidget
+NotificationWidget
 {
   border-image: url(theme:bg.png) 8px 0px 8px 8px repeat; /* border is actually 3px but corner is 8x8 */
   border-width: 8px 0px 8px 8px;
@@ -7,6 +7,7 @@ AbstractNotificationWidget
   max-width: 300px;
 }
 
+/* Show altered background */
 NotificationWidget[urgencyString="Critical"]  
 {
   border-image: url(theme:bg_crit.png) 8px 0px 8px 8px repeat;
@@ -15,8 +16,14 @@ NotificationWidget[urgencyString="Critical"]
 NotificationWidget #Title
 {
 	color: white;
-	margin: 1ex;
+	margin: 1ex 1ex 0px 1ex;
 	font-weight: bold;
+}
+
+/* No body specified */
+NotificationWidget[contents="t"], NotificationWidget[contents="it"] #Title
+{
+  margin: 1ex;
 }
 
 NotificationWidget #Icon
