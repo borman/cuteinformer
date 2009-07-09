@@ -18,7 +18,8 @@ HEADERS += \
 	NotificationWidget.h \
 	FreedesktopNotifications.h \
 	ThemeManager.h \
-	Settings.h
+	Settings.h \
+	DBusApplicationAdapter.h
 	
 SOURCES += \
 	main.cpp \
@@ -28,4 +29,5 @@ SOURCES += \
 	NotificationWidget.cpp \
 	FreedesktopNotifications.cpp \
 	ThemeManager.cpp \
-	Settings.cpp
+	Settings.cpp \
+	DBusApplicationAdapter.cpp

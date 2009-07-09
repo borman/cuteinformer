@@ -74,7 +74,7 @@ class NotificationWidget: public AbstractNotificationWidget
 			"t" is for title and "b" is for body, e.g. "i" means that only an icon is present
 			and "it" means an icon and a title without a body
 			**/
-		QString contents() const {return m_contents_code; }
+		QString contents() const { return m_contents_code; }
 	signals:
 		void closed(NotificationWidget *);
 	private slots:

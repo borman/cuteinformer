@@ -9,16 +9,11 @@ FreedesktopNotifications::FreedesktopNotifications(QObject *parent)
 	: QObject(parent),
 		stack(this), counter(0)
 {
-	QDBusConnection connection = QDBusConnection::sessionBus();
-	connection.registerObject("/org/freedesktop/Notifications", this, 
-														 QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals);
-	connection.registerService("org.cuteinformer");
-	connection.registerService("org.freedesktop.Notifications");
 }
 
 QStringList FreedesktopNotifications::GetCapabilities()
 {
-	return QStringList() << "body" << "body-hyperlinks" << "body-markup";
+	return QStringList() << "body" << "body-hyperlinks" << "body-markup" << "icon-static";
 }
 
 quint32 FreedesktopNotifications::Notify(const QString &app_name, quint32 replaces_id, 
@@ -65,6 +60,8 @@ quint32 FreedesktopNotifications::Notify(const QString &app_name, quint32 replac
 		}
 	}
 	
+	// TODO: get icon data from hints if required
+	
 	NotificationWidget *w = new NotificationWidget(urgency, category, summary, body, app_icon, expire_timeout);
 	w->resize(w->sizeHint());
 	stack.push(w);
@@ -86,11 +83,13 @@ void FreedesktopNotifications::CloseNotification(quint32 id)
 	w->closeNotification(NotificationWidget::ByMessage);
 }
 
-void FreedesktopNotifications::GetServerInformation(QString &name, QString &vendor, QString &version)
+void FreedesktopNotifications::GetServerInformation(QString &name, QString &vendor, 
+																										 QString &version, QString &spec_version)
 {
 	name = "cuteinformer";
 	vendor = "borman";
 	version = "0.1";
+	spec_version = "0.9";
 }
 
 //-------------- Internal methods

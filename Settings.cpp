@@ -10,6 +10,7 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QStyle>
+#include <QApplication>
 #include <QtDebug>
 
 #ifndef INSTALL_PREFIX
@@ -31,6 +32,7 @@ class SettingsDialog: public QDialog
 	private:
 		QLineEdit *filePath;
 		QDialogButtonBox *buttonBox;
+		QFileDialog *fileDialog;
 };
 
 SettingsDialog::SettingsDialog()
@@ -55,9 +57,9 @@ SettingsDialog::SettingsDialog()
 	layout->addRow(tr("Theme"), fileSelector);
 	layout->addRow(buttonBox);
 	
-	QFileDialog *fileDialog = new QFileDialog(this);
+	fileDialog = new QFileDialog(this, tr("Select theme..."));
 	fileDialog->setNameFilter(tr("Themes (*.theme)"));
-	fileDialog->setWindowModality(Qt::WindowModal);
+	//fileDialog->setWindowModality(Qt::WindowModal);
 	
 	connect(fileButton, SIGNAL(clicked()), fileDialog, SLOT(show()));
 	connect(fileDialog, SIGNAL(fileSelected(QString)), filePath, SLOT(setText(QString)));
@@ -74,7 +76,9 @@ SettingsDialog::SettingsDialog()
 void SettingsDialog::showEvent(QShowEvent *)
 {
 	QSettings settings;
-	filePath->setText(settings.value("Theme").toString());
+	QString themePath = settings.value("Theme").toString();
+	filePath->setText(themePath);
+	fileDialog->selectFile(themePath);
 	//buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
 }
 
@@ -124,6 +128,14 @@ void Settings::reload()
 void Settings::showDialog()
 {
 	dialog->show();
+}
+
+Settings *Settings::instance()
+{
+	static Settings *m_instance = NULL;
+	if (!m_instance)
+		m_instance = new Settings(qApp);
+	return m_instance;
 }
 
 #include "Settings.moc"

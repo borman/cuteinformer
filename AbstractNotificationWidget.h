@@ -7,6 +7,8 @@
 /**
 	Abstract notification widget. It is not intended for actual use,
 	though it defines some common interface and behaviour.
+	
+	\todo Separate notification interface from animation engine
 **/
 class AbstractNotificationWidget: public QFrame
 {

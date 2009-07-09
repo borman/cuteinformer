@@ -13,22 +13,23 @@ NotificationWidget::NotificationWidget(NotificationWidget::Urgency urgency, cons
 		m_contents_code(""),
 		w_title(this), w_icon(this), w_body(this)
 {	
-	qDebug() << "Notification(" << urgency << category << ")";
-	
 	setObjectName("Notification");
 	
 	w_title.setObjectName("Title");
+	w_title.setTextFormat(Qt::PlainText);
 	
 	w_icon.setObjectName("Icon");
 	
 	w_body.setObjectName("Body");
 	w_body.setWordWrap(true);
+	w_body.setTextFormat(Qt::RichText); // FIXME: Well, this is not totally correct though it's simple
 	
 	QHBoxLayout *mainLayout = new QHBoxLayout(this);
 	mainLayout->addWidget(&w_icon);
 	QVBoxLayout *bodyLayout = new QVBoxLayout;
 	bodyLayout->addWidget(&w_title);
 	bodyLayout->addWidget(&w_body);
+	bodyLayout->addStretch(); // push body up to touch title
 	mainLayout->addLayout(bodyLayout);
 	
 	// Remove spacing: leave it to Style Sheet

@@ -1,5 +1,6 @@
 #include "FreedesktopNotifications.h"
 #include "Settings.h"
+#include "DBusApplicationAdapter.h"
 
 #include <QApplication>
 #include <QFile>
@@ -7,6 +8,9 @@
 #include <QDir>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QDBusError>
 #include <QtDebug>
 
 #include <cstring>
@@ -26,17 +30,15 @@ void print_usage()
 	QTextStream cout(stdout);
 	cout << QObject::tr("--help           Show this information") << '\n';
 	cout << QObject::tr("--debug          Allow debugging output") << '\n';
-	cout << QObject::tr("--settings       Ask a running instance to show settings dialog if it is running "
-															"or show it and run a new instance otherwise") << '\n';
+	cout << QObject::tr("--settings       Show settings dialog. If the daemon is running, ask it "
+																				"or start a new instance otherwise") << '\n';
 }
 
 
 static QtMsgHandler default_msg_handler = NULL;
 void no_debug_msg_handler(QtMsgType t, const char *msg) // This handler is used to suppress debug garbage
 {
-	if (!default_msg_handler)
-		return;
-	if (t!=QtDebugMsg)
+	if (default_msg_handler!=NULL && t!=QtDebugMsg)
 		default_msg_handler(t, msg);
 }
 
@@ -70,23 +72,58 @@ int main(int argc, char **argv)
 	{
 		if (showSettings) 
 		{ // Ok, let that instance show settings dialog
-			// FIXME: Did I forget anything?
-			return 0;
+			qDebug() << "Asking to show settings via D-Bus...";
+			QDBusInterface iface("org.cuteinformer", "/Application", "org.cuteinformer.Application");
+			QDBusReply<void> reply = iface.call("ShowSettingsDialog");
+			if (reply.isValid())
+				return 0;
+			else
+				die(QObject::tr("Error %1: \"%2\"")
+						.arg(reply.error().name())
+						.arg(reply.error().message()));
 		}
 		else			
 			die(QObject::tr("CuteInformer is already running with pid %1")
 				.arg(iface->servicePid("org.cuteinformer")));
 	}
 	
-	Settings settings;
+	//============================
+	// Everything ok, start server
+	
+	qDebug() << "Starting server.";
+	
+	qDebug() << "Registering application service...";
+	if (!QDBusConnection::sessionBus().registerService("org.cuteinformer"))
+		die(QObject::tr("Unable to register application service"));
+	
+	qDebug() << "Registering notifications service...";
+	if (!QDBusConnection::sessionBus().registerService("org.freedesktop.Notifications"))
+		die(QObject::tr("Unable to register notifications service"));
+	
+	qDebug() << "Starting application adapter...";
+	new DBusApplicationAdapter;
+	if (!QDBusConnection::sessionBus().registerObject("/Application", qApp))
+		die(QObject::tr("Unable to register application interface"));
+	
+	qDebug() << "Loading settings...";
+	Settings::instance(); // Load settings
 	if (showSettings)
-		settings.showDialog();
+		Settings::instance()->showDialog();
 
 	// Listen for D-Bus calls
+	qDebug() << "Starting notifications interface...";
 	FreedesktopNotifications noti;
-	Q_UNUSED(noti);
-	app.setQuitOnLastWindowClosed(false);
+	if (!QDBusConnection::sessionBus().registerObject("/org/freedesktop/Notifications", &noti, 
+														 QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals))
+		die(QObject::tr("Unable to register notifications interface"));
 	
-	qDebug() << "cuteinformer started!";
-	return app.exec();
+	qDebug() << "Server started!";
+	
+	app.setQuitOnLastWindowClosed(false);
+	int ret = app.exec();
+	qDebug() << "Event loop ended";
+	
+	// BUG: something weird happening at this point as everything hangs
+	
+	return ret;
 }

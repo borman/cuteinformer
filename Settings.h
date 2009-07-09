@@ -9,11 +9,13 @@ class Settings: public QObject
 {
 	Q_OBJECT
 	public:
-		Settings(QObject *parent = NULL);
-		virtual ~Settings();
+		static Settings *instance();
 	public slots:
 		void reload();
 		void showDialog();
+	protected:
+		Settings(QObject *parent = NULL);
+		virtual ~Settings();
 	private:
 		ThemeManager tman;
 		SettingsDialog *dialog;

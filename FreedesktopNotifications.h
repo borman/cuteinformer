@@ -37,8 +37,11 @@ class FreedesktopNotifications: public QObject
 		/* void org.freedesktop.Notifications.CloseNotification (UINT32 id); */
 		void CloseNotification(quint32 id);
 		
-		/* void org.freedesktop.Notifications.GetServerInformation (out STRING name, out STRING vendor, out STRING version); */
-		void GetServerInformation(QString &name, QString &vendor, QString &version);
+		/* void org.freedesktop.Notifications.GetServerInformation (out STRING name, out STRING vendor,
+								out STRING version, out STRING spec_version); */
+		// Though spec_version is not mentioned in specifications, notification-daemon supplies it
+		// and some apps already rely on it
+		void GetServerInformation(QString &name, QString &vendor, QString &version, QString &spec_version);
 	private slots:
 		void closed(int reason_code);
 		void destroyed(QObject *o);
