@@ -35,6 +35,9 @@ class NotificationWidget: public AbstractNotificationWidget
 	Q_PROPERTY(QString body READ body)
 	Q_PROPERTY(QPixmap icon READ icon)
 	Q_PROPERTY(int timeout READ timeout)
+
+	// Theming properties
+	Q_PROPERTY(QString iconAlignment READ iconAlignment WRITE setIconAlignment)
 	public:
 		enum Urgency
 		{
@@ -52,7 +55,7 @@ class NotificationWidget: public AbstractNotificationWidget
 		/**
 			Urgency and category are properties that specify notification's class,
 			so they may be used as selectors in style sheet and they must be provided to constructor.
-			Other properties' data is ard to classify, so they are supplied later.
+			Other properties' data is hard to classify, so they are supplied later.
 			**/
 		NotificationWidget(Urgency urgency = Normal, const QString &category = QString::null,
 												const QString &title = QString::null, const QString &body = QString::null,
@@ -75,6 +78,14 @@ class NotificationWidget: public AbstractNotificationWidget
 			and "it" means an icon and a title without a body
 			**/
 		QString contents() const { return m_contents_code; }
+
+		/**
+			If textual contents are higher than the icon, it has to be aligned somehow.
+			This property is referred as 'qproperty-iconAlignment' and its value is
+			one of "Top", "Center", "Bottom" (case insensitive, with double-quotes).
+			**/
+		QString iconAlignment() const {return m_icon_alignment;}
+		void setIconAlignment(QString v);
 	signals:
 		void closed(NotificationWidget *);
 	private slots:
@@ -96,6 +107,8 @@ class NotificationWidget: public AbstractNotificationWidget
 		QLabel w_title;
 		QLabel w_icon;
 		QLabel w_body;
+
+		QString m_icon_alignment;
 };
 
 #endif // NOTIFICATION_WIDGET_H
