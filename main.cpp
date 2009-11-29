@@ -1,4 +1,5 @@
 #include "FreedesktopNotifications.h"
+#include "KNotify.h"
 #include "Settings.h"
 #include "DBusApplicationAdapter.h"
 
@@ -96,9 +97,14 @@ int main(int argc, char **argv)
 	if (!QDBusConnection::sessionBus().registerService("org.cuteinformer"))
 		die(QObject::tr("Unable to register application service"));
 	
-	qDebug() << "Registering notifications service...";
+	qDebug() << "Registering Freedesktop notifications service...";
 	if (!QDBusConnection::sessionBus().registerService("org.freedesktop.Notifications"))
-		die(QObject::tr("Unable to register notifications service"));
+		die(QObject::tr("Unable to register Freedesktop notifications service"));
+
+  qDebug() << "Registering KDE notifications service...";
+	if (!QDBusConnection::sessionBus().registerService("org.kde.knotify"))
+		die(QObject::tr("Unable to register KDE notifications service"));
+
 	
 	qDebug() << "Starting application adapter...";
 	new DBusApplicationAdapter;
@@ -111,11 +117,20 @@ int main(int argc, char **argv)
 		Settings::instance()->showDialog();
 
 	// Listen for D-Bus calls
-	qDebug() << "Starting notifications interface...";
-	FreedesktopNotifications noti;
-	if (!QDBusConnection::sessionBus().registerObject("/org/freedesktop/Notifications", &noti, 
-														 QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals))
-		die(QObject::tr("Unable to register notifications interface"));
+	qDebug() << "Starting Freedesktop notifications interface...";
+	FreedesktopNotifications freedesktop_notify(qApp);
+	if (!QDBusConnection::sessionBus().registerObject("/org/freedesktop/Notifications", 
+        &freedesktop_notify, 
+        QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals))
+		die(QObject::tr("Unable to register Freedesktop notifications interface"));
+
+  qDebug() << "Starting KDE notifications interface...";
+  KNotify kde_notify(qApp);
+  if (!QDBusConnection::sessionBus().registerObject("/Notify", 
+        &kde_notify, 
+        QDBusConnection::ExportAllSlots | QDBusConnection::ExportAllSignals))
+		die(QObject::tr("Unable to register KDE notifications interface"));
+
 	
 	qDebug() << "Server started!";
 	
