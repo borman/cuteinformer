@@ -11,7 +11,7 @@ AbstractNotificationWidget::AbstractNotificationWidget()
 	setWindowFlags(Qt::ToolTip | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 	
 	setAttribute(Qt::WA_DeleteOnClose, true);
-	setAttribute(Qt::WA_TranslucentBackground, true);
+	//setAttribute(Qt::WA_TranslucentBackground, true);
 	setAttribute(Qt::WA_X11NetWmWindowTypeNotification, true);
 	
 	setFocusPolicy(Qt::NoFocus);
