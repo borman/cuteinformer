@@ -21,7 +21,7 @@ NotificationWidget #Title
 }
 
 /* No body specified */
-NotificationWidget[contents="t"], NotificationWidget[contents="it"] #Title
+NotificationWidget[contents="t"] #Title, NotificationWidget[contents="it"] #Title
 {
   margin: 1ex;
 }
