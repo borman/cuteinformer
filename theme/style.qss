@@ -1,6 +1,7 @@
 NotificationWidget
 {
   border-image: url(theme:bg.png) 8px 0px 8px 8px repeat; /* border is actually 3px but corner is 8x8 */
+  background: #222222;
   border-width: 8px 0px 8px 8px;
 	padding: -5px 0px -5px -5px; /* neutralize padding caused by skin image */
 
