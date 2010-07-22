@@ -47,6 +47,7 @@ int main(int argc, char **argv)
 {
 	QApplication app(argc, argv);
 	QCoreApplication::setApplicationName("cuteinformer");
+	QCoreApplication::setOrganizationName("cuteinformer");
 	
 	// Parse command line
 	bool showSettings = false;
