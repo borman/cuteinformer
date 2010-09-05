@@ -12,24 +12,23 @@ OBJECTS_DIR = .obj
 
 # All source files
 HEADERS += \
-	StackManager.h \
-	WidgetStack.h \
-	AbstractNotificationWidget.h \
-	NotificationWidget.h \
-	FreedesktopNotifications.h \
-	ThemeManager.h \
-	Settings.h \
-	DBusApplicationAdapter.h \
-  KNotify.h
-	
+  src/StackManager.h \
+  src/WidgetStack.h \
+  src/AbstractNotificationWidget.h \
+  src/NotificationWidget.h \
+  src/FreedesktopNotifications.h \
+  src/ThemeManager.h \
+  src/Settings.h \
+  src/DBusApplicationAdapter.h \
+  src/KNotify.h
 SOURCES += \
-	main.cpp \
-	StackManager.cpp \
-	WidgetStack.cpp \
-	AbstractNotificationWidget.cpp \
-	NotificationWidget.cpp \
-	FreedesktopNotifications.cpp \
-	ThemeManager.cpp \
-	Settings.cpp \
-	DBusApplicationAdapter.cpp \
-  KNotify.cpp
+  src/main.cpp \
+  src/StackManager.cpp \
+  src/WidgetStack.cpp \
+  src/AbstractNotificationWidget.cpp \
+  src/NotificationWidget.cpp \
+  src/FreedesktopNotifications.cpp \
+  src/ThemeManager.cpp \
+  src/Settings.cpp \
+  src/DBusApplicationAdapter.cpp \
+  src/KNotify.cpp
