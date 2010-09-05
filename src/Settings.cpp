@@ -1,6 +1,6 @@
 #include "Settings.h"
+#include "Settings_p.h"
 
-#include <QDialog>
 #include <QSettings>
 #include <QFormLayout>
 #include <QHBoxLayout>
@@ -16,24 +16,6 @@
 #ifndef INSTALL_PREFIX
 #define INSTALL_PREFIX "/usr"
 #endif
-
-class SettingsDialog: public QDialog
-{
-	Q_OBJECT
-	public:
-		SettingsDialog();
-	signals:
-		void settingsChanged();
-	private slots:
-		void saveSettings();
-		void pathEdited(const QString &);
-	protected:
-		void showEvent(QShowEvent *);
-	private:
-		QLineEdit *filePath;
-		QDialogButtonBox *buttonBox;
-		QFileDialog *fileDialog;
-};
 
 SettingsDialog::SettingsDialog()
 	: QDialog()
@@ -138,4 +120,3 @@ Settings *Settings::instance()
 	return m_instance;
 }
 
-#include "Settings.moc"
